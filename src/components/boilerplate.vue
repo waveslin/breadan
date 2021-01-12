@@ -1,10 +1,17 @@
 <template>
-    <section>
-        <input type="text" v-on:keyup.enter="checkEnter">
-    </section>
+    <div>
+        
+    </div>
 </template>
 
 <script>
+
+/**
+ * 
+ * vue 2 boilerplate
+ * 
+*/
+
 export default {
   name: "Menu",
   props: {
@@ -25,9 +32,7 @@ export default {
     /*...*/
   },
   methods: {
-    checkEnter : function(){
-        console.log('Pressed Enter')
-    }
+   /*...*/
   },
   created(){
     /*...*/
@@ -38,7 +43,6 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
- 
+    
 </style>
