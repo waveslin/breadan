@@ -3,7 +3,15 @@
     <nav id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/menu">Menu</router-link>
+      <router-link to="/menu">Menu</router-link> | 
+      <router-link to="/cart">
+        <span> Cart </span>
+        <span class="icon">
+              <!-- <font-awesome-icon icon="shopping-basket" class="shopping-basket"/> -->
+              <font-awesome-icon icon="shopping-bag" class="shopping-bag"/>
+          </span>
+      </router-link>
+      
     </nav>
     <router-view/>
   </div>
@@ -20,11 +28,13 @@
 
 #nav {
   padding: 30px;
+  font-size: 24px;
 }
 
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+  text-decoration: none;
 }
 
 #nav a.router-link-exact-active {
