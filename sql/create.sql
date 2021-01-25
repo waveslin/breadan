@@ -14,11 +14,12 @@ DROP TABLE IF EXISTS restaurants;
 
 CREATE TABLE restaurants(
     id INT NOT NULL AUTO_INCREMENT=10000,
+    short_code VARCHAR(3) NOT NULL,
     street VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
     province VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
-    postal VARCHAR(255) NOT NULL,
+    postal_code VARCHAR(25) NOT NULL,
     start_at TIME NOT NULL DEFAULT '11:00:00',
     end_at TIME  NOT NULL DEFAULT '23:00:00',
     PRIMARY KEY (id)
@@ -35,42 +36,45 @@ CREATE TABLE categories(
 CREATE TABLE products(
     id INT NOT NULL AUTO_INCREMENT=30000,
     name VARCHAR(255) NOT NULL,
-    categoryid INT NOT NULL,
+    category_id INT NOT NULL,
     weight INT NOT NULL,
     price DECIMAL(4,2) NOT NULL,
     description VARCHAR(1000),
+    image VARCHAR(255),
+
     UNIQUE(name),
     PRIMARY KEY (id),
     CONSTRAINT chk_weight CHECK (weight >= 0),
     CONSTRAINT chk_price CHECK (price >= 0),
-    CONSTRAINT fk_category FOREIGN KEY (categoryid)
+    CONSTRAINT fk_category FOREIGN KEY (category_id)
     REFERENCES categories(id)
 );
 
 
 CREATE TABLE offers(
     id INT NOT NULL AUTO_INCREMENT=40000,
-    categoryid INT NOT NULL,
+    category_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     price DECIMAL(6,2) NOT NULL,
     description VARCHAR(1000),
+    image VARCHAR(255),
     UNIQUE(name),
     PRIMARY KEY (id),
     CONSTRAINT chk_price CHECK (price >= 0),
-    CONSTRAINT fk_category FOREIGN KEY (categoryid)
+    CONSTRAINT fk_category FOREIGN KEY (category_id)
     REFERENCES categories(id)
 );
 
 CREATE TABLE specials(
     id INT NOT NULL AUTO_INCREMENT=50000,
-    offerid INT NOT NULL,
-    productid INT NOT NULL,
+    offer_id INT NOT NULL,
+    product_id INT NOT NULL,
     quantity INT NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT chk_quantity CHECK (quantity >= 0),
-    CONSTRAINT fk_offer FOREIGN KEY (offerid)
+    CONSTRAINT fk_offer FOREIGN KEY (offer_id)
     REFERENCES offers(id),
-    CONSTRAINT fk_product FOREIGN KEY (productid)
+    CONSTRAINT fk_product FOREIGN KEY (product_id)
     REFERENCES products(id)
 );
 
@@ -81,7 +85,7 @@ CREATE TABLE deliveries(
     city VARCHAR(255) NOT NULL,
     province VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL,
-    postal VARCHAR(255) NOT NULL,
+    postal_code VARCHAR(25) NOT NULL,
     apartment VARCHAR(25),
     PRIMARY KEY (id)
 );
@@ -89,8 +93,8 @@ CREATE TABLE deliveries(
 
 CREATE TABLE customers(
     id INT NOT NULL AUTO_INCREMENT=70000,
-    firstname VARCHAR(255) NOT NULL,
-    lastname VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     phone VARCHAR(25),
     UNIQUE(email, phone),
@@ -98,45 +102,45 @@ CREATE TABLE customers(
 );
 
 
-
 CREATE TABLE purchases(
     id INT NOT NULL AUTO_INCREMENT=80000,
-    purchase_ref VARCHAR NOT NULL,
-    customerid INT NOT NULL,
+    purchase_ref VARCHAR(255) NOT NULL,
+    customer_id INT NOT NULL,
     subtotal DECIMAL(8,2) NOT NULL,
-    restaurantid INT NOT NULL,
+    restaurant_id INT NOT NULL,
     pickup BOOLEAN NOT NULL DEFAULT FALSE,
-    deliveryid INT,
+    delivery_id INT,
     duration TIME DEFAULT '00:45:00',
     create_date TIMESTAMP DEFAULT current_timestamp,
     UNIQUE(purchase_ref),
     PRIMARY KEY (id),
     CONSTRAINT chk_price CHECK (subtotal >= 0),
-    CONSTRAINT fk_customer FOREIGN KEY (customerid)
+    CONSTRAINT fk_customer FOREIGN KEY (customer_id)
     REFERENCES customers(id),
-    CONSTRAINT fk_restaurant FOREIGN KEY (restaurantid)
+    CONSTRAINT fk_restaurant FOREIGN KEY (restaurant_id)
     REFERENCES drestaurants(id),
-    CONSTRAINT fk_delivery FOREIGN KEY (deliveryid)
+    CONSTRAINT fk_delivery FOREIGN KEY (delivery_id)
     REFERENCES deliveries(id)
 );
 
 
 CREATE TABLE items(
     id INT NOT NULL AUTO_INCREMENT=90000,
-    categoryid INT,
-    purchaseid INT,
-    productid INT,
-    offerid INT,
+    category_id INT,
+    purchase_id INT,
+    product_id INT,
+    offer_id INT,
     quantity INT,
     PRIMARY KEY (id),
     CONSTRAINT chk_quantity CHECK (quantity >= 0),
-    CONSTRAINT fk_category FOREIGN KEY (categoryid)
+    CONSTRAINT fk_category FOREIGN KEY (category_id)
     REFERENCES categories(id),
-    CONSTRAINT fk_purchase FOREIGN KEY (purchaseid)
+    CONSTRAINT fk_purchase FOREIGN KEY (purchase_id)
     REFERENCES purchases(id),
-    CONSTRAINT fk_product FOREIGN KEY (productid)
+    CONSTRAINT fk_product FOREIGN KEY (product_id)
     REFERENCES products(id),
-    CONSTRAINT fk_offer FOREIGN KEY (offerid)
+    CONSTRAINT fk_offer FOREIGN KEY (offer_id)
     REFERENCES offers(id)
 );
+
 
