@@ -27,7 +27,7 @@ CREATE TABLE restaurants(
 
 
 CREATE TABLE categories(
-    id INT NOT NULL AUTO_INCREMENT=20000,,
+    id INT NOT NULL AUTO_INCREMENT=20000,
     name VARCHAR(255) NOT NULL,
     UNIQUE(name),
     PRIMARY KEY (id)
