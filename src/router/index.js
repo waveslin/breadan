@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import About from '../views/About.vue';
-import Menu from '../views/Menu.vue';
-import Cart from '../views/Cart.vue';
+import Home from '../views/home/index.vue';
+import Menu from '../views/menu/index.vue';
+import Cart from '../views/cart/index.vue';
+import Item from '../views/item/index.vue';
 
 Vue.use(VueRouter);
 
@@ -14,9 +14,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    component: About
+    path: '/item',
+    name: 'Item',
+    component: Item
   },
   {
     path: '/menu',

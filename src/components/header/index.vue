@@ -13,7 +13,7 @@
 */
 
 export default {
-  name: "Menu",
+  name: "Header",
   props: {
     /*...*/
   },

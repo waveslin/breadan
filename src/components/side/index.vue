@@ -1,6 +1,6 @@
 <template>
     <div>
-        Cart
+        
     </div>
 </template>
 
@@ -13,7 +13,7 @@
 */
 
 export default {
-  name: "Cart",
+  name: "Side",
   props: {
     /*...*/
   },
