@@ -1,19 +1,24 @@
+DELIMITER $$
 CREATE TRIGGER after_purchased_insert
 AFTER INSERT
-ON purchases FOR EACH ROW
+ON breadan.purchase FOR EACH ROW
 BEGIN
-    IF NEW.deliveryid IS NULL THEN
-        UPDATE purchases SET pickup = TRUE, duration = '00:20:00'
+    IF NEW.delivery_id IS NULL THEN
+        UPDATE breadan.purchase SET pickup = TRUE, duration = '00:20:00'
         WHERE id = NEW.id;
     END IF;
-END;
+END$$
+DELIMITER ;
 
+
+DELIMITER $$
 CREATE TRIGGER after_purchased_update
 AFTER UPDATE
-ON purchases FOR EACH ROW
+ON breadan.purchase FOR EACH ROW
 BEGIN
-    IF NEW.deliveryid IS NULL THEN
-        UPDATE purchases SET pickup = TRUE, duration = '00:20:00'
+    IF NEW.delivery_id IS NULL THEN
+        UPDATE breadan.purchase SET pickup = TRUE, duration = '00:20:00'
         WHERE id = NEW.id;
     END IF;
-END;
+END$$
+DELIMITER ;

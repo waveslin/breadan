@@ -1,20 +1,20 @@
 
 -- drop tables and ready for reset
-DROP TABLE IF EXISTS items;
-DROP TABLE IF EXISTS purchases;
-DROP TABLE IF EXISTS deliveries;
-DROP TABLE IF EXISTS customers;
-DROP TABLE IF EXISTS specials;
-DROP TABLE IF EXISTS offers;
-DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS restaurants;
+DROP TABLE IF EXISTS breadan.item;
+DROP TABLE IF EXISTS breadan.purchase;
+DROP TABLE IF EXISTS breadan.delivery;
+DROP TABLE IF EXISTS breadan.customer;
+DROP TABLE IF EXISTS breadan.special;
+DROP TABLE IF EXISTS breadan.offer;
+DROP TABLE IF EXISTS breadan.product;
+DROP TABLE IF EXISTS breadan.category;
+DROP TABLE IF EXISTS breadan.restaurant;
 
 -- create table
 
-CREATE TABLE restaurants(
-    id INT NOT NULL AUTO_INCREMENT=10000,
-    short_code VARCHAR(3) NOT NULL,
+CREATE TABLE breadan.restaurant(
+    id INT NOT NULL AUTO_INCREMENT,
+    short_code VARCHAR(4) NOT NULL,
     street VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
     province VARCHAR(255) NOT NULL,
@@ -26,33 +26,32 @@ CREATE TABLE restaurants(
 );
 
 
-CREATE TABLE categories(
-    id INT NOT NULL AUTO_INCREMENT=20000,
+CREATE TABLE breadan.category(
+    id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     UNIQUE(name),
     PRIMARY KEY (id)
 );
 
-CREATE TABLE products(
-    id INT NOT NULL AUTO_INCREMENT=30000,
+CREATE TABLE breadan.product(
+    id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     category_id INT NOT NULL,
     weight INT NOT NULL,
     price DECIMAL(4,2) NOT NULL,
     description VARCHAR(1000),
     image VARCHAR(255),
-
     UNIQUE(name),
     PRIMARY KEY (id),
-    CONSTRAINT chk_weight CHECK (weight >= 0),
-    CONSTRAINT chk_price CHECK (price >= 0),
-    CONSTRAINT fk_category FOREIGN KEY (category_id)
-    REFERENCES categories(id)
+    CONSTRAINT product_chk_weight CHECK (weight >= 0),
+    CONSTRAINT product_chk_price CHECK (price >= 0),
+    CONSTRAINT product_fk_category FOREIGN KEY (category_id)
+    REFERENCES category(id)
 );
 
 
-CREATE TABLE offers(
-    id INT NOT NULL AUTO_INCREMENT=40000,
+CREATE TABLE breadan.offer(
+    id INT NOT NULL AUTO_INCREMENT,
     category_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     price DECIMAL(6,2) NOT NULL,
@@ -60,27 +59,27 @@ CREATE TABLE offers(
     image VARCHAR(255),
     UNIQUE(name),
     PRIMARY KEY (id),
-    CONSTRAINT chk_price CHECK (price >= 0),
-    CONSTRAINT fk_category FOREIGN KEY (category_id)
-    REFERENCES categories(id)
+    CONSTRAINT offer_chk_price CHECK (price >= 0),
+    CONSTRAINT offer_fk_category FOREIGN KEY (category_id)
+    REFERENCES category(id)
 );
 
-CREATE TABLE specials(
-    id INT NOT NULL AUTO_INCREMENT=50000,
+CREATE TABLE breadan.special(
+    id INT NOT NULL AUTO_INCREMENT,
     offer_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT chk_quantity CHECK (quantity >= 0),
-    CONSTRAINT fk_offer FOREIGN KEY (offer_id)
-    REFERENCES offers(id),
-    CONSTRAINT fk_product FOREIGN KEY (product_id)
-    REFERENCES products(id)
+    CONSTRAINT special_chk_quantity CHECK (quantity >= 0),
+    CONSTRAINT special_fk_offer FOREIGN KEY (offer_id)
+    REFERENCES offer(id),
+    CONSTRAINT special_fk_product FOREIGN KEY (product_id)
+    REFERENCES product(id)
 );
 
 
-CREATE TABLE deliveries(
-    id INT NOT NULL AUTO_INCREMENT=60000,
+CREATE TABLE breadan.delivery(
+    id INT NOT NULL AUTO_INCREMENT,
     street VARCHAR(255) NOT NULL,
     city VARCHAR(255) NOT NULL,
     province VARCHAR(255) NOT NULL,
@@ -91,8 +90,8 @@ CREATE TABLE deliveries(
 );
 
 
-CREATE TABLE customers(
-    id INT NOT NULL AUTO_INCREMENT=70000,
+CREATE TABLE breadan.customer(
+    id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -102,8 +101,8 @@ CREATE TABLE customers(
 );
 
 
-CREATE TABLE purchases(
-    id INT NOT NULL AUTO_INCREMENT=80000,
+CREATE TABLE breadan.purchase(
+    id INT NOT NULL AUTO_INCREMENT,
     purchase_ref VARCHAR(255) NOT NULL,
     customer_id INT NOT NULL,
     subtotal DECIMAL(8,2) NOT NULL,
@@ -114,33 +113,33 @@ CREATE TABLE purchases(
     create_date TIMESTAMP DEFAULT current_timestamp,
     UNIQUE(purchase_ref),
     PRIMARY KEY (id),
-    CONSTRAINT chk_price CHECK (subtotal >= 0),
-    CONSTRAINT fk_customer FOREIGN KEY (customer_id)
-    REFERENCES customers(id),
-    CONSTRAINT fk_restaurant FOREIGN KEY (restaurant_id)
-    REFERENCES drestaurants(id),
-    CONSTRAINT fk_delivery FOREIGN KEY (delivery_id)
-    REFERENCES deliveries(id)
+    CONSTRAINT purchase_chk_price CHECK (subtotal >= 0),
+    CONSTRAINT purchase_fk_customer FOREIGN KEY (customer_id)
+    REFERENCES customer(id),
+    CONSTRAINT purchase_fk_restaurant FOREIGN KEY (restaurant_id)
+    REFERENCES restaurant(id),
+    CONSTRAINT purchase_fk_delivery FOREIGN KEY (delivery_id)
+    REFERENCES delivery(id)
 );
 
 
-CREATE TABLE items(
-    id INT NOT NULL AUTO_INCREMENT=90000,
+CREATE TABLE breadan.item(
+    id INT NOT NULL AUTO_INCREMENT,
     category_id INT,
     purchase_id INT,
     product_id INT,
     offer_id INT,
     quantity INT,
     PRIMARY KEY (id),
-    CONSTRAINT chk_quantity CHECK (quantity >= 0),
-    CONSTRAINT fk_category FOREIGN KEY (category_id)
-    REFERENCES categories(id),
-    CONSTRAINT fk_purchase FOREIGN KEY (purchase_id)
-    REFERENCES purchases(id),
-    CONSTRAINT fk_product FOREIGN KEY (product_id)
-    REFERENCES products(id),
-    CONSTRAINT fk_offer FOREIGN KEY (offer_id)
-    REFERENCES offers(id)
+    CONSTRAINT item_chk_quantity CHECK (quantity >= 0),
+    CONSTRAINT item_fk_category FOREIGN KEY (category_id)
+    REFERENCES category(id),
+    CONSTRAINT item_fk_purchase FOREIGN KEY (purchase_id)
+    REFERENCES purchase(id),
+    CONSTRAINT item_fk_product FOREIGN KEY (product_id)
+    REFERENCES product(id),
+    CONSTRAINT item_fk_offer FOREIGN KEY (offer_id)
+    REFERENCES offer(id)
 );
 
 
