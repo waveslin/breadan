@@ -2,7 +2,17 @@
     <section>
         <p>{{result}}</p>
         <input type='text' v-model='result' v-on:keyup.enter='checkEnter'>
-        
+        <section class="columns is-multiline">
+          <div class="column is-4" v-for="n in 16" :key="n">
+            <div class="card">
+              <div class="card-image">
+                <figure class="image">
+                  <img src="images/normal.jpg" alt="Placeholder image">
+                </figure>
+              </div>
+            </div>
+          </div>
+        </section>
     </section>
 </template>
 
